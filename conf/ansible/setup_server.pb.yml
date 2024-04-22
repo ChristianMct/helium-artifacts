@@ -1,0 +1,63 @@
+---
+- hosts: all
+  become: true
+  
+  vars:
+    helium_art_repo: https://github.com/ChristianMct/helium-artifacts.git
+
+  tasks:
+    - name: Install aptitude
+      apt:
+        name: aptitude
+        state: latest
+        update_cache: true
+
+    - name: Update apt and install required system packages
+      apt:
+        pkg:
+          - nano
+          - git
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+          - python3-pip
+          - virtualenv
+          - python3-setuptools
+          - iperf3
+          - build-essential
+          - jq
+          - zsh
+        state: latest
+        update_cache: true
+
+    - name: Clones Artifacts Repo
+      ansible.builtin.git:
+        repo: "{{ helium_art_repo }}"
+        dest: /root/helium-artifacts
+        recursive: yes
+        update: yes
+        version: main
+
+    - name: Add Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu focal stable
+        state: present
+
+    - name: Update apt and install docker-ce
+      apt:
+        name: docker-ce
+        state: latest
+        update_cache: true
+
+    - name: Install Docker Modules for Python
+      pip:
+        name: 
+          - docker
+          - pandas
+          - paramiko
