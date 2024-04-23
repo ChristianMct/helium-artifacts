@@ -5,7 +5,7 @@ go 1.21
 toolchain go1.22.2
 
 require (
-	github.com/ChristianMct/helium v0.2.0
+	github.com/ChristianMct/helium v0.2.1
 	github.com/stretchr/testify v1.9.0
 	github.com/tuneinsight/lattigo/v5 v5.0.2
 	golang.org/x/exp v0.0.0-20240314144324-c7f7c6466f7f

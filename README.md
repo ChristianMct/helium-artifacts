@@ -6,9 +6,9 @@ This repository contains the artifacts of the paper _HElium: Scalable MPC among 
     - The HElium repository
         - contains: the code for the HElium system 
         - hosted at [https://github.com/ChristianMct/helium]
-        - mirrored at [TODO]
+        - mirrored at https://zenodo.org/doi/10.5281/zenodo.11045945
     - The present artifact repository
-        - imports HElium at `v0.2.0`
+        - imports HElium at `v0.2.1`
         - contains:
             - an HElium application implementing the paper's experiment
             - an MP-SPDZ application implementing the paper's experiment
@@ -27,7 +27,12 @@ The following software are required on the machine(s) running the experiments:
  - [Python 3.x](https://www.python.org/downloads/)
  - `make`
 
- An Ansible playbook is provided to setup servers from SSH.
+The following Python packages are also required:
+ - `docker`
+ - `paramiko`
+
+ An Ansible playbook is provided to setup servers from SSH. [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) must be installed on your local
+ system in order to use it.
 
 ### Running locally
 1. Clone the artifact repository: `git clone https://github.com/ChristianMct/helium-artifacts && cd helium-artifacts`
@@ -45,10 +50,7 @@ with host names `<host1>` and `<host2>`, and that `<host1>` has publickey SSH ac
 the experiment and run the session nodes, while `<host2>` will run the helper "cloud". 
 
 1. Setup the servers with Ansible: `ansible-playbook -i <host1>,<host2> ../conf/ansible/setup_server.pb.yml`
-3. SSH into `<host2>`
-2. Build the image on `<host2>`: TODO
 3. SSH into `<host1>`
-2. Build the image on `<host2>`: TODO
 3. Open the experiment runner script `./helium/exp_runner/main.py`
 4. Change the docker host name for the cloud: `CLOUD_HOST = 'localhost'` => `CLOUD_HOST = '<host2>'`
 1. Run the experiment: `python3 exp_runner/main.py >> results`

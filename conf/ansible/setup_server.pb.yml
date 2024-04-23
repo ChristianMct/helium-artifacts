@@ -62,8 +62,6 @@
         version: main
 
     - name: Build the helium experiment image
-      community.docker.docker_image:
-        build:
-          path: ./helium-artifacts/helium
-        tag: exp:helium
-        source: build
+      community.docker.docker_image_build:
+        name: exp:helium
+        path: ./helium-artifacts/helium
