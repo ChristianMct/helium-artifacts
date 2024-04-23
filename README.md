@@ -1,54 +1,92 @@
-# Helium – Experiments 
+# Helium – Artifacts 
 
-This repository implements the experiments for the Helium system.
+This repository contains the artifacts of the paper _HElium: Scalable MPC among Lightweight Participants and under Churn_. The paper will appear at CCS 2024 and is already available at [https://eprint.iacr.org/2024/194].
 
-It consists in several docker images and the script to run them.
+## List of artifacts
+    - The HElium repository
+        - contains: the code for the HElium system 
+        - hosted at [https://github.com/ChristianMct/helium]
+        - mirrored at [TODO]
+    - The present artifact repository
+        - imports HElium at `v0.2.0`
+        - contains:
+            - an HElium application implementing the paper's experiment
+            - an MP-SPDZ application implementing the paper's experiment
+            - scripts for building and running both experiments.
+        - hosted at [https://github.com/ChristianMct/helium-artifacts]
+        - mirrored at [TODO]
 
-The Helium code is available in anonymized form in the `helium/deps/helium` directory.
+**Note:** due to a limitation of the Go building system, the artifact repository cannot import 
 
-## Experiment
+## Instructions
+This section details the procedure for building and running the HElium experiments.
 
-The experiment is a 512x512 matrix-vector multiplication mod 65537 circuit. The time and network cost is measured at party 0.
+### Setup
+The following software are required on the machine(s) running the experiments:
+ - [Docker](https://docs.docker.com/get-docker/)
+ - [Python 3.x](https://www.python.org/downloads/)
+ - `make`
 
-**Helium** 
-We implement an Helium application for this circuit at in the `helium/app` folder.
+ An Ansible playbook is provided to setup servers from SSH.
 
-**MP-SPDZ**
-We benchmark all semi-honest protocols for the dishonest majority in the framework.
-They all use the same online phase with Beaver triplets, but use different offline phases:
-- `semi`: OT-based
-- `soho`: HbC HighGear.
-- `temi`: LWE-based adaptation of Cramer et al. 2000
-- `hemi`: HbC LowGear. 
+### Running locally
+1. Clone the artifact repository: `git clone https://github.com/ChristianMct/helium-artifacts && cd helium-artifacts`
+2. Build the experiment Docker image: `make helium`
+3. Navigate to the HElium runnner location: `cd helium`
+4. Run the experiment: `python3 exp_runner/main.py >> results`
 
-## Building the experiments
+This last command runs the experiments for a grid of parameters and stores the results in `./result`. 
+By default, the experiment and grid parameters represent a small set of experiments, for local test purposes.
+To reproduce the results of the paper, larger scale experiments have to be run, which require two servers.
 
-The experiments can be built with a Makefile. Running:
-````
-make all
-````
-builds all the experiments. Note that the MP-SPDZ images can take a significant time to build. To build the Helium experiments only, use
-````
-make -C helium 
-````
+### Running on two servers
+For this part, we assume that the steps above have been performed on a local machine, and that we have publickey SSH access to two servers 
+with host names `<host1>` and `<host2>`, and that `<host1>` has publickey SSH access to `<host2>`. In the steps below `<host1>` will drive 
+the experiment and run the session nodes, while `<host2>` will run the helper "cloud". 
 
-## Running the expermients
+1. Setup the servers with Ansible: `ansible-playbook -i <host1>,<host2> ../conf/ansible/setup_server.pb.yml`
+3. SSH into `<host2>`
+2. Build the image on `<host2>`: TODO
+3. SSH into `<host1>`
+2. Build the image on `<host2>`: TODO
+3. Open the experiment runner script `./helium/exp_runner/main.py`
+4. Change the docker host name for the cloud: `CLOUD_HOST = 'localhost'` => `CLOUD_HOST = '<host2>'`
+1. Run the experiment: `python3 exp_runner/main.py >> results`
 
-**Experiment I (MP-SPDZ part)**
-A python script enables running the experiments. The experiment parameters and the grid of experiment to run is controlled from within the script.
-Running:
-````
-cd mpspdz
-python3 run_exp.py > exp_result.json
-````
-runs all the experiments in the grid, and write the results to the exp_result.json file.
+### Controlling the experiment parameters and grid
+To reproduce the paper experiments, we further modify the runner script parameters. The snippets below represent the actual experiment grids
+of the paper. Note that fully running these grids might take a significant time.
 
-**Experiment I (Helium part) and II**
-A python script enables running the experiments. The experiment parameters and the grid of experiment to run is controlled from within the script.
-Running:
-````
-cd helium
-python3 exp_runner/main.py > exp_result.json
-````
-runs all the experiments in the grid, and write the results to the exp_result.json file.
+#### Experiment I
+```python
+# ====== Experiments parameters ======
+RATE_LIMIT = "100mbit" # outbound rate limit for the parties
+DELAY = "30ms"         # outbound network delay for the parties
+EVAL_COUNT = 100       # number of circuit evaluation performed per experiment
+
+# ====== Experiment Grid ======
+N_PARTIES = range(2, 11, 2)             # the number of session nodes
+THRESH_VALUES = [0]                     # the cryptographic threshold
+FAILURE_RATES = [0]                     # the failure rate in fail/min
+FAILURE_DURATIONS = [0.333333333333]    # the mean failure duration in min
+N_REP = 10                              # number of experiment repetition
+SKIP_TO = 0
+```
+
+#### Experiment II
+```python
+# ====== Experiments parameters ======
+RATE_LIMIT = "100mbit" # outbound rate limit for the parties
+DELAY = "30ms"         # outbound network delay for the parties
+EVAL_COUNT = 100       # number of circuit evaluation performed per experiment
+
+# ====== Experiment Grid ======
+N_PARTIES = [30]                        # the number of session nodes
+THRESH_VALUES = [10, 16, 20]            # the cryptographic threshold
+FAILURE_RATES = range(0, 71, 5)         # the failure rate in fail/min
+FAILURE_DURATIONS = [0.333333333333]    # the mean failure duration in min
+N_REP = 10                              # number of experiment repetition
+SKIP_TO = 0
+```
+
 

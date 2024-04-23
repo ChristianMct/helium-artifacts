@@ -1,9 +1,12 @@
-all: exps
+.PHONY: helium mpspdz deps-init all
+
+helium:
+	make -C helium
 
 deps-init:
 	git submodule update --init
 
-exps: deps-init
+mpspdz: deps-init
 	make -C mpspdz
-	make -C helium
-
+	
+all: helium mpspdz
