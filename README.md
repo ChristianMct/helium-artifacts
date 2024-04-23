@@ -39,21 +39,20 @@ to work on a server directly, please see the next part as it includes an automat
 
 1. Clone the artifact repository: `git clone https://github.com/ChristianMct/helium-artifacts && cd helium-artifacts`
 2. Build the experiment Docker image: `make helium`
-3. Navigate to the HElium runner location: `cd helium`
-4. Run the experiment: `python3 exp_runner/main.py >> results`
+4. Run the experiment: `python3 helium/exp_runner/main.py >> results`
 
 This last command runs the experiments for a grid of parameters and stores the results in `./result`. 
 By default, the experiment and grid parameters represent a small set of experiments, for local test purposes.
 To reproduce the results of the paper, larger scale experiments have to be run, which require two servers.
 
 ### Running on two servers
-For this part, we assume that the steps above have been performed on a local machine, and that we have publickey SSH access to two servers 
-with host names `<host1>` and `<host2>`, and that `<host1>` has publickey SSH access to `<host2>`. In the steps below `<host1>` will drive 
+For this part, we assume that the steps above have been performed on a local machine that has publickey SSH access to two servers 
+with host names `<host1>` and `<host2>`, **and that** `<host1>` **has publickey SSH access to** `<host2>`. In the steps below `<host1>` will drive 
 the experiment and run the session nodes, while `<host2>` will run the helper "cloud". 
 
-1. Setup the servers with Ansible: `ansible-playbook -i <host1>,<host2> ../conf/ansible/setup_server.pb.yml`
+1. Setup the servers with Ansible: `ansible-playbook -i <host1>,<host2> conf/ansible/setup_server.pb.yml`
 2. SSH into `<host1>`
-3. Open the experiment runner script `./helium/exp_runner/main.py`
+3. Open the experiment runner script `helium/exp_runner/main.py`
 4. Change the docker host name for the cloud: `CLOUD_HOST = 'localhost'` => `CLOUD_HOST = '<host2>'`
 5. Run the experiment: `python3 exp_runner/main.py >> results`
 
