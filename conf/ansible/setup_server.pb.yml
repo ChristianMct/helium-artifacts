@@ -31,14 +31,6 @@
         state: latest
         update_cache: true
 
-    - name: Clones Artifacts Repo
-      ansible.builtin.git:
-        repo: "{{ helium_art_repo }}"
-        dest: /root/helium-artifacts
-        recursive: yes
-        update: yes
-        version: main
-
     - name: Add Docker GPG apt Key
       apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
@@ -59,5 +51,19 @@
       pip:
         name: 
           - docker
-          - pandas
           - paramiko
+
+    - name: Clones Artifacts Repo
+      ansible.builtin.git:
+        repo: "{{ helium_art_repo }}"
+        dest: ./helium-artifacts
+        recursive: yes
+        update: yes
+        version: main
+
+    - name: Build the helium experiment image
+      community.docker.docker_image:
+        build:
+          path: ./helium-artifacts/helium
+        tag: exp:helium
+        source: build

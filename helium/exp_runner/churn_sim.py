@@ -3,8 +3,6 @@ import random
 import time
 import sys
 from math import comb
-import pandas as pd
-#import matplotlib.pyplot as plt 
 
 def log(str, end="\n"):
     print(str, file=sys.stderr, end=end, flush=True)
@@ -161,17 +159,3 @@ if __name__ == '__main__':
         simulation.rec_per_min()
         ))
 
-    # frs =range(10, 400, 5)
-    # ts = dict()
-    # for t in [10, 16, 20]:
-    #     avg_on = []
-    #     frac_t = []
-    #     for fr in frs:
-    #         sim = NodeSystemSimulation(N=30, epoch_duration=.5, system_failure_rate=fr, avg_reconnection_time=0.3333333)
-    #         avg_on.append(sim.expected_online_nodes())
-    #         frac_t.append(sim.expected_time_above_threshold(t))
-    #     ts[t] = avg_on
-
-    # df = pd.DataFrame(ts, index=frs)
-    # plot = df.plot()
-    # plt.show()
