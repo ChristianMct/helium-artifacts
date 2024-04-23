@@ -6,7 +6,7 @@ This repository contains the artifacts of the paper _HElium: Scalable MPC among 
     - The HElium repository
         - contains: the code for the HElium system 
         - hosted at [https://github.com/ChristianMct/helium]
-        - mirrored at https://zenodo.org/doi/10.5281/zenodo.11045945
+        - mirrored at [https://zenodo.org/doi/10.5281/zenodo.11045945]
     - The present artifact repository
         - imports HElium at `v0.2.1`
         - contains:
@@ -14,7 +14,7 @@ This repository contains the artifacts of the paper _HElium: Scalable MPC among 
             - an MP-SPDZ application implementing the paper's experiment
             - scripts for building and running both experiments.
         - hosted at [https://github.com/ChristianMct/helium-artifacts]
-        - mirrored at [TODO]
+        - mirrored at [https://zenodo.org/doi/10.5281/zenodo.11046011]
 
 **Note:** due to a limitation of the Go building system, the artifact repository cannot import 
 
