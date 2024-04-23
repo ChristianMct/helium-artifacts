@@ -16,7 +16,7 @@ This repository contains the artifacts of the paper _HElium: Scalable MPC among 
     - hosted at [https://github.com/ChristianMct/helium-artifacts](https://github.com/ChristianMct/helium-artifacts)
     - mirrored at [https://zenodo.org/doi/10.5281/zenodo.11046011](https://zenodo.org/doi/10.5281/zenodo.11046011)
 
-**Note:** due to a limitation of the Go building system, the artifact repository cannot import 
+**Note:** due to a limitation of the Go building system, the artifact repository cannot import code from Zenodo directly.
 
 ## Instructions
 This section details the procedure for building and running the HElium experiments.
@@ -26,18 +26,20 @@ The following software are required on the machine(s) running the experiments:
  - [Docker](https://docs.docker.com/get-docker/)
  - [Python 3.x](https://www.python.org/downloads/)
  - `make`
+ - (Optional) [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) can be used to setup all dependencies ssh-accessible machines automatically.
 
 The following Python packages are also required:
  - `docker`
  - `paramiko`
 
- An Ansible playbook is provided to setup servers from SSH. [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) must be installed on your local
- system in order to use it.
-
 ### Running locally
+In this first part, we cover the steps to run a small scale test experiment, to demonstrate the process.
+We assume it is performed on a local machine for which the requirement are already setup. If you are planning 
+to work on a server directly, please see the next part as it includes an automated setup from SSH.
+
 1. Clone the artifact repository: `git clone https://github.com/ChristianMct/helium-artifacts && cd helium-artifacts`
 2. Build the experiment Docker image: `make helium`
-3. Navigate to the HElium runnner location: `cd helium`
+3. Navigate to the HElium runner location: `cd helium`
 4. Run the experiment: `python3 exp_runner/main.py >> results`
 
 This last command runs the experiments for a grid of parameters and stores the results in `./result`. 
@@ -57,7 +59,8 @@ the experiment and run the session nodes, while `<host2>` will run the helper "c
 
 ### Controlling the experiment parameters and grid
 To reproduce the paper experiments, we further modify the runner script parameters. The snippets below represent the actual experiment grids
-of the paper. Note that fully running these grids might take a significant time.
+of the paper. Note that fully running these grids might take a significant time. Although this should be unfrequent, might also be some bugs 
+left which prevents an experiment from completing. The `SKIP_TO` variable enables restarting from a specific point in the grid.
 
 #### Experiment I
 ```python
@@ -75,12 +78,15 @@ N_REP = 10                              # number of experiment repetition
 SKIP_TO = 0
 ```
 
+**Note**: for this experiment, we compute the per-party network cost as the cloud network cost divided by the number of parties (since the 
+protocol is fully symmetric).
+
 #### Experiment II
 ```python
 # ====== Experiments parameters ======
 RATE_LIMIT = "100mbit" # outbound rate limit for the parties
 DELAY = "30ms"         # outbound network delay for the parties
-EVAL_COUNT = 100       # number of circuit evaluation performed per experiment
+EVAL_COUNT = 10        # number of circuit evaluation performed per experiment
 
 # ====== Experiment Grid ======
 N_PARTIES = [30]                        # the number of session nodes
