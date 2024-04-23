@@ -16,8 +16,6 @@ This repository contains the artifacts of the paper _HElium: Scalable MPC among 
     - hosted at [https://github.com/ChristianMct/helium-artifacts](https://github.com/ChristianMct/helium-artifacts)
     - mirrored at [https://zenodo.org/doi/10.5281/zenodo.11046011](https://zenodo.org/doi/10.5281/zenodo.11046011)
 
-**Note:** due to a limitation of the Go building system, the artifact repository cannot import code from Zenodo directly.
-
 ## Instructions
 This section details the procedure for building and running the HElium experiments.
 
