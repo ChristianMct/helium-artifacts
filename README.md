@@ -51,8 +51,8 @@ with host names `<host1>` and `<host2>`, **and that** `<host1>` **has publickey 
 the experiment and run the session nodes, while `<host2>` will run the helper "cloud". 
 
 1. Setup the servers with Ansible: `ansible-playbook -i <host1>,<host2> conf/ansible/setup_server.pb.yml`
-2. SSH into `<host1>`
-3. Open the experiment runner script `helium/exp_runner/main.py`
+2. SSH into `<host1>` and `cd helium-artifacts`
+3. Open the experiment runner script at `helium/exp_runner/main.py`
 4. Change the docker host name for the cloud: `CLOUD_HOST = 'localhost'` => `CLOUD_HOST = '<host2>'`
 5. Run the experiment: `python3 exp_runner/main.py >> results`
 
