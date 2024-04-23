@@ -1,20 +1,20 @@
 # Helium – Artifacts 
 
-This repository contains the artifacts of the paper _HElium: Scalable MPC among Lightweight Participants and under Churn_. The paper will appear at CCS 2024 and is already available at [https://eprint.iacr.org/2024/194].
+This repository contains the artifacts of the paper _HElium: Scalable MPC among Lightweight Participants and under Churn_. The paper will appear at CCS 2024 and is already available at [https://eprint.iacr.org/2024/194](https://eprint.iacr.org/2024/194).
 
 ## List of artifacts
-    - The HElium repository
-        - contains: the code for the HElium system 
-        - hosted at [https://github.com/ChristianMct/helium]
-        - mirrored at [https://zenodo.org/doi/10.5281/zenodo.11045945]
-    - The present artifact repository
-        - imports HElium at `v0.2.1`
-        - contains:
-            - an HElium application implementing the paper's experiment
-            - an MP-SPDZ application implementing the paper's experiment
-            - scripts for building and running both experiments.
-        - hosted at [https://github.com/ChristianMct/helium-artifacts]
-        - mirrored at [https://zenodo.org/doi/10.5281/zenodo.11046011]
+- The HElium repository
+    - contains: the code for the HElium system 
+    - hosted at [https://github.com/ChristianMct/helium](https://github.com/ChristianMct/helium)
+    - mirrored at [https://zenodo.org/doi/10.5281/zenodo.11045945](https://zenodo.org/doi/10.5281/zenodo.11045945)
+- The present artifact repository
+    - imports HElium at `v0.2.1`
+    - contains:
+        - an HElium application implementing the paper's experiment
+        - an MP-SPDZ application implementing the paper's experiment
+        - scripts for building and running both experiments.
+    - hosted at [https://github.com/ChristianMct/helium-artifacts](https://github.com/ChristianMct/helium-artifacts)
+    - mirrored at [https://zenodo.org/doi/10.5281/zenodo.11046011](https://zenodo.org/doi/10.5281/zenodo.11046011)
 
 **Note:** due to a limitation of the Go building system, the artifact repository cannot import 
 
@@ -50,10 +50,10 @@ with host names `<host1>` and `<host2>`, and that `<host1>` has publickey SSH ac
 the experiment and run the session nodes, while `<host2>` will run the helper "cloud". 
 
 1. Setup the servers with Ansible: `ansible-playbook -i <host1>,<host2> ../conf/ansible/setup_server.pb.yml`
-3. SSH into `<host1>`
+2. SSH into `<host1>`
 3. Open the experiment runner script `./helium/exp_runner/main.py`
 4. Change the docker host name for the cloud: `CLOUD_HOST = 'localhost'` => `CLOUD_HOST = '<host2>'`
-1. Run the experiment: `python3 exp_runner/main.py >> results`
+5. Run the experiment: `python3 exp_runner/main.py >> results`
 
 ### Controlling the experiment parameters and grid
 To reproduce the paper experiments, we further modify the runner script parameters. The snippets below represent the actual experiment grids
