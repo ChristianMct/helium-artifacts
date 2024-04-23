@@ -4,17 +4,15 @@ from itertools import product
 import re
 import time
 
+# ====== Experiments parameters ======
+EXP_CONTAINER_LABEL = "helium-exp"
 RATE_LIMIT = "100mbit"
 DELAY = "30ms"
+PROGRAM = "matmult"
 
-EXP_CONTAINER_LABEL = "helium-exp"
-
-PROGRAM = "matmult_stream"
-
+# ====== Experiment Grid ======
 MACHINES = ["semi", "soho", "temi", "hemi"]
-
-N_PARTIES = range(2, 10)
-
+N_PARTIES = range(2, 4)
 N_REP = 1
 
 def log(str, end="\n"):

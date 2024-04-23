@@ -66,7 +66,7 @@ left which prevents an experiment from completing. The `SKIP_TO` variable enable
 # ====== Experiments parameters ======
 RATE_LIMIT = "100mbit" # outbound rate limit for the parties
 DELAY = "30ms"         # outbound network delay for the parties
-EVAL_COUNT = 100       # number of circuit evaluation performed per experiment
+EVAL_COUNT = 10       # number of circuit evaluation performed per experiment
 
 # ====== Experiment Grid ======
 N_PARTIES = range(2, 11, 2)             # the number of session nodes
@@ -85,7 +85,7 @@ protocol is fully symmetric).
 # ====== Experiments parameters ======
 RATE_LIMIT = "100mbit" # outbound rate limit for the parties
 DELAY = "30ms"         # outbound network delay for the parties
-EVAL_COUNT = 10        # number of circuit evaluation performed per experiment
+EVAL_COUNT = 100        # number of circuit evaluation performed per experiment
 
 # ====== Experiment Grid ======
 N_PARTIES = [30]                        # the number of session nodes
@@ -97,3 +97,21 @@ SKIP_TO = 0
 ```
 
 
+### Reproducing the MP-SPDZ baseline results
+This part is aimed at reproducing the MP-SPDZ baseline results. Note that this part is time consuming and subject to more randomness that
+is out of our control. The build part takes ~15 minutes on our machine. The run part depends on the grid and can be approximated from the 
+result in our paper. The default experiment runs all baseline for 2 and 3 parties without repetition.
+
+1. Build the mpspdz images: `make mpspdz`
+2. (Optional) if the last build fail, `rm -rf mpspdz/deps/MP-SPDZ/deps/SimplestOT_C` and start from 1.
+3. Run the experiments: `python3 mpspdz/run_exp.py >> mpspdz_results`
+
+The snippet provides the experiment grid used in the paper:
+```python
+# ====== Experiment Grid ======
+MACHINES = ["semi", "soho", "temi", "hemi"]
+N_PARTIES = range(2, 11)
+N_REP = 10
+```
+**Note**: we used `N_REP=1` to match the experiment grid in of the HElium experiment. However, this is probably an overkill because of the 
+small variance and the large gap between HElium and its baseline. `N_REP=1` is probably good enough for reproducing the results.
