@@ -7,24 +7,27 @@ This repository contains the artifacts of the paper _HElium: Scalable MPC among 
     - contains: the code for the HElium system 
     - hosted at [https://github.com/ChristianMct/helium](https://github.com/ChristianMct/helium)
     - mirrored at [https://zenodo.org/doi/10.5281/zenodo.11045945](https://zenodo.org/doi/10.5281/zenodo.11045945)
+    - is **main artifact** and constitutes its reusable, more documented part
 - The present artifact repository
-    - imports HElium at `v0.2.1`
+    - imports the HElium repository at `v0.2.1`
     - contains:
         - an HElium application implementing the paper's experiment
-        - an MP-SPDZ application implementing the paper's experiment
+        - an MP-SPDZ application implementing the paper's baseline
         - scripts for building and running both experiments.
     - hosted at [https://github.com/ChristianMct/helium-artifacts](https://github.com/ChristianMct/helium-artifacts)
     - mirrored at [https://zenodo.org/doi/10.5281/zenodo.11046011](https://zenodo.org/doi/10.5281/zenodo.11046011)
+    - is a **secondary artifact** which scope is solely to reproduce the paper's experiments
 
 ## Instructions
-This section details the procedure for building and running the HElium experiments.
+This section details the procedure for building and running the HElium experiments (i.e., the HElium part of Experiment I
+and the whole Experiment II).
 
 ### Setup
 The following software are required on the machine(s) running the experiments:
  - [Docker](https://docs.docker.com/get-docker/)
  - [Python 3.x](https://www.python.org/downloads/)
  - `make`
- - (Optional) [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) can be used to setup all dependencies ssh-accessible machines automatically.
+ - (Optional) [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) can be used to setup all dependencies on ssh-accessible machines.
 
 The following Python packages are also required:
  - `docker`
@@ -95,8 +98,8 @@ SKIP_TO = 0
 ```
 
 
-### Reproducing the MP-SPDZ baseline results
-This part is aimed at reproducing the MP-SPDZ baseline results. Note that this part is time consuming and subject to more randomness that
+## Reproducing the MP-SPDZ baseline results
+This section is aimed at reproducing the MP-SPDZ baseline results. Note that this part is time consuming and subject to more randomness that
 is out of our control. The build part takes ~15 minutes on our machine. The run part depends on the grid and can be approximated from the 
 result in our paper. The default experiment runs all baseline for 2 and 3 parties without repetition so it should take around an hour to complete.
 
