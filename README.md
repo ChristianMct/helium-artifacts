@@ -100,7 +100,7 @@ SKIP_TO = 0
 ### Reproducing the MP-SPDZ baseline results
 This part is aimed at reproducing the MP-SPDZ baseline results. Note that this part is time consuming and subject to more randomness that
 is out of our control. The build part takes ~15 minutes on our machine. The run part depends on the grid and can be approximated from the 
-result in our paper. The default experiment runs all baseline for 2 and 3 parties without repetition.
+result in our paper. The default experiment runs all baseline for 2 and 3 parties without repetition so it should take around an hour to complete.
 
 1. Build the mpspdz images: `make mpspdz`
 2. (Optional) if the last build fail, `rm -rf mpspdz/deps/MP-SPDZ/deps/SimplestOT_C` and start from 1.
