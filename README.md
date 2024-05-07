@@ -1,17 +1,17 @@
 # Helium – Artifacts 
 
-This repository contains the artifacts of the paper _HElium: Scalable MPC among Lightweight Participants and under Churn_. The paper will appear at CCS 2024 and is already available at [https://eprint.iacr.org/2024/194](https://eprint.iacr.org/2024/194).
+This repository contains the artifacts of the paper _Helium: Scalable MPC among Lightweight Participants and under Churn_. The paper will appear at CCS 2024 and is already available at [https://eprint.iacr.org/2024/194](https://eprint.iacr.org/2024/194).
 
 ## List of artifacts
-- The HElium repository
-    - contains: the code for the HElium system 
+- The Helium repository
+    - contains: the code for the Helium system 
     - hosted at [https://github.com/ChristianMct/helium](https://github.com/ChristianMct/helium)
     - mirrored at [https://zenodo.org/doi/10.5281/zenodo.11045945](https://zenodo.org/doi/10.5281/zenodo.11045945)
     - is **main artifact** and constitutes its reusable, more documented part
 - The present artifact repository
-    - imports the HElium repository at `v0.2.1`
+    - imports the Helium repository at `v0.2.1`
     - contains:
-        - an HElium application implementing the paper's experiment
+        - an Helium application implementing the paper's experiment
         - an MP-SPDZ application implementing the paper's baseline
         - scripts for building and running both experiments.
     - hosted at [https://github.com/ChristianMct/helium-artifacts](https://github.com/ChristianMct/helium-artifacts)
@@ -19,19 +19,21 @@ This repository contains the artifacts of the paper _HElium: Scalable MPC among 
     - is a **secondary artifact** which scope is solely to reproduce the paper's experiments
 
 ## Instructions
-This section details the procedure for building and running the HElium experiments (i.e., the HElium part of Experiment I
+This section details the procedure for building and running the Helium experiments (i.e., the Helium part of Experiment I
 and the whole Experiment II).
 
 ### Setup
-The following software are required on the machine(s) running the experiments:
- - [Docker](https://docs.docker.com/get-docker/)
- - [Python 3.x](https://www.python.org/downloads/)
- - `make`
- - (Optional) [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) can be used to setup all dependencies on ssh-accessible machines.
+The following software are required on the machine(s) running the experiments (see below for an automated way of setting up the machines). 
+The version numbers are those used for the paper's results, but are only indicative.
+ - [Docker](https://docs.docker.com/get-docker/), version 26.1.1
+ - [Python 3](https://www.python.org/downloads/), version 3.10.12
+ - `make`, version 4.3
 
 The following Python packages are also required:
- - `docker`
- - `paramiko`
+ - `docker`, version 7.0.0
+ - `paramiko`, version 3.4.0
+
+ [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) can be used to setup all the above dependencies on ssh-accessible machines (the following instructions include the related command).
 
 ### Running locally
 In this first part, we cover the steps to run a small scale test experiment, to demonstrate the process.
@@ -97,6 +99,27 @@ N_REP = 10                              # number of experiment repetition
 SKIP_TO = 0
 ```
 
+### Result format
+The result of a single experiment is a JSON string. Here is a description of its fields:
+- `n_party`: the number of parties ($N$ in the paper)
+- `threshold`: the cryptographic threshold ($T$ in the paper)
+- `failure_rate`: the system-wide failure rate in failure/min ($\Lambda_f$ in the paper)
+- `failure_duration`: the expected failure duration in min ($\lambda_r^{-1}$ in the paper)
+- `rep`: the experiment repetition identifier
+- `rate_limit`: the session nodes' network rate limit (outgoing only)
+- `delay`: the session nodes' network delay (outgoing only)
+- `TimeSetup`: wall time in Seconds between the start and the end of the setup phase, measured at the helper. The setup phase starts upon triggering the first public-key generation protocol and ends when the last required public-key is generated.
+- `SentSetup`: setup-related outgoing network traffic volume in Megabytes at the helper. 
+- `RecvSetup`: setup-related incoming network traffic volume in Megabytes at the helper.
+- `TimeCompute`: wall time in Seconds between the start and end of the compute phase. The compute phase starts upon triggering the first circuit execution and ends when all circuits (controlled by `EVAL_COUNT` in the python script) have been evaluated.
+- `SentCompute`: compute-related outgoing network traffic volume in Megabyte at the helper.
+- `RecvCompute`: compute related incoming network traffic volume in Megabyte at the helper.
+- `theoretical_node_online`: expected number of online node at equilibrium ($E[N_{online}]$ in the paper.) 
+- `theoretical_time_above_thresh`: expected fraction of time for which at least T nodes are online at equilibrium ($Pr[N_{online} \geq T]$ in the paper) 
+- `actual_node_online`: empirical average number of online node during the experiment.
+- `actual_time_above_thresh`: empirical fraction of time for which at least $T$ nodes were online during the experiment.
+
+The experiment runner executes all experiment in the grid, outputting each experiment result on a new line.
 
 ## Reproducing the MP-SPDZ baseline results
 This section is aimed at reproducing the MP-SPDZ baseline results. Note that this part is time consuming and subject to more randomness that
@@ -114,5 +137,5 @@ MACHINES = ["semi", "soho", "temi", "hemi"]
 N_PARTIES = range(2, 11)
 N_REP = 10
 ```
-**Note**: we used `N_REP=1` to match the experiment grid in of the HElium experiment. However, this is probably an overkill because of the 
-small variance and the large gap between HElium and its baseline. `N_REP=1` is probably good enough for reproducing the results.
+**Note**: we used `N_REP=1` to match the experiment grid in of the Helium experiment. However, this is probably an overkill because of the 
+small variance and the large gap between Helium and its baseline. `N_REP=1` is probably good enough for reproducing the results.
