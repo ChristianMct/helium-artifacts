@@ -75,7 +75,7 @@ func genNodeConfigForNode(nid sessions.NodeID, nids []sessions.NodeID, threshold
 			Protocols: protocols.ExecutorConfig{MaxProtoPerNode: 3, MaxParticipation: 1, MaxAggregation: 1},
 		},
 		ComputeConfig: compute.ServiceConfig{
-			MaxCircuitEvaluation: 1,
+			MaxCircuitEvaluation: 10,
 			Protocols:            protocols.ExecutorConfig{MaxProtoPerNode: 3, MaxParticipation: 1, MaxAggregation: 1},
 		},
 	}
