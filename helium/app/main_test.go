@@ -30,7 +30,7 @@ func TestApp(t *testing.T) {
 
 	hid := sessions.NodeID("cloud")
 
-	hconf := genNodeConfigForNode(hid, nids, threshold, shamirPks)
+	hconf := genConfigForNode(hid, nids, threshold, shamirPks)
 	cloudn, err := node.New(hconf, nl)
 	require.NoError(t, err)
 	cloud := helium.NewHeliumServer(cloudn)
@@ -38,7 +38,7 @@ func TestApp(t *testing.T) {
 	//clins := make([]*node.Node, 0, len(nids))
 	clis := make([]*helium.HeliumClient, 0, len(nids))
 	for _, nid := range nids {
-		clin, err := node.New(genNodeConfigForNode(nid, nids, threshold, shamirPks), nl)
+		clin, err := node.New(genConfigForNode(nid, nids, threshold, shamirPks), nl)
 		require.NoError(t, err)
 		//clins = append(clins, clin)
 		clis = append(clis, helium.NewHeliumClient(clin, hid, "local"))

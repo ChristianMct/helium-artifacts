@@ -32,8 +32,7 @@ var (
 	nParty       = flag.Int("n_party", -1, "the number of parties")
 	cloudAddr    = flag.String("cloud_address", "", "the address of the helper node")
 	argThreshold = flag.Int("threshold", -1, "the threshold")
-	//expDuration  = flag.Duration("expDuration", 0, "the duration of the experiment, see time.ParseDuration for valid input formats.")
-	expRounds = flag.Int("expRounds", 1, "number of circuit evaluatation rounds to perform")
+	expRounds    = flag.Int("expRounds", 1, "number of circuit evaluatation rounds to perform")
 )
 
 func genNodeLists(nParty int, cloudAddr string) (nids []sessions.NodeID, nl node.List, shamirPks map[sessions.NodeID]mhe.ShamirPublicPoint, nodeMapping map[string]sessions.NodeID) {
@@ -55,7 +54,7 @@ func genNodeLists(nParty int, cloudAddr string) (nids []sessions.NodeID, nl node
 	return
 }
 
-func genNodeConfigForNode(nid sessions.NodeID, nids []sessions.NodeID, threshold int, shamirPks map[sessions.NodeID]mhe.ShamirPublicPoint) (nc node.Config) {
+func genConfigForNode(nid sessions.NodeID, nids []sessions.NodeID, threshold int, shamirPks map[sessions.NodeID]mhe.ShamirPublicPoint) (nc node.Config) {
 	sessParams := sessions.Parameters{
 		ID:            "test-session",
 		Nodes:         nids,
@@ -72,11 +71,11 @@ func genNodeConfigForNode(nid sessions.NodeID, nids []sessions.NodeID, threshold
 		ObjectStoreConfig: objectstore.Config{BackendName: "mem"},
 		TLSConfig:         node.TLSConfig{InsecureChannels: true},
 		SetupConfig: setup.ServiceConfig{
-			Protocols: protocols.ExecutorConfig{MaxProtoPerNode: 3, MaxParticipation: 1, MaxAggregation: 1},
+			Protocols: protocols.ExecutorConfig{MaxProtoPerNode: 3, MaxParticipation: 3, MaxAggregation: 1},
 		},
 		ComputeConfig: compute.ServiceConfig{
 			MaxCircuitEvaluation: 10,
-			Protocols:            protocols.ExecutorConfig{MaxProtoPerNode: 3, MaxParticipation: 1, MaxAggregation: 1},
+			Protocols:            protocols.ExecutorConfig{MaxProtoPerNode: 3, MaxParticipation: 3, MaxAggregation: 1},
 		},
 	}
 
@@ -159,7 +158,6 @@ func checkResultCorrect(params bgv.Parameters, encoder bgv.Encoder, out circuits
 
 	for i, v := range res {
 		if v != dataWant[i] {
-			//panic(fmt.Errorf("incorrect result for %s: \n has %v, want %v", opl, res, dataWant))
 			return fmt.Errorf("incorrect result for %s: \n has %v, want %v\n", out.OperandLabel, res, dataWant)
 		}
 	}
@@ -207,7 +205,7 @@ func main() {
 
 	nids, nl, shamirPks, nodeMapping := genNodeLists(*nParty, *cloudAddr)
 
-	nc := genNodeConfigForNode(nid, nids, threshold, shamirPks)
+	nc := genConfigForNode(nid, nids, threshold, shamirPks)
 
 	params, err := bgv.NewParametersFromLiteral(nc.SessionParameters[0].FHEParameters.(bgv.ParametersLiteral))
 	if err != nil {

@@ -121,6 +121,13 @@ The result of a single experiment is a JSON string. Here is a description of its
 
 The experiment runner executes all experiment in the grid, outputting each experiment result on a new line.
 
+### Further configuration of Helium
+The configuration of the Helium nodes in the experiments can be found in the `genConfigForNode` function of the `helium/app/main.go` file.
+The current configuration matches the one used for the paper's experiment, and it has the following performance-related characteristics:
+- it uses FHE parameters with a polynomial degree of $2^12$ and a coefficient modulus of 109 bits.
+- it limits to 3 the number concurrently running protocols per *session node* (`MaxProtoPerNode` and `MaxParticipation`), and to 32 the number of concurrently running protocols at the helper (`MaxAggregation`).
+- it limits to 10 the number of concurrently running circuits (`MaxCircuitEvaluation`).
+
 ## Reproducing the MP-SPDZ baseline results
 This section is aimed at reproducing the MP-SPDZ baseline results. Note that this part is time consuming and subject to more randomness that
 is out of our control. The build part takes ~15 minutes on our machine. The run part depends on the grid and can be approximated from the 
