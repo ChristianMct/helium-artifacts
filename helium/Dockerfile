@@ -1,7 +1,7 @@
 #########################################
 #  Builder                              #
 #########################################
-FROM golang:latest as builder
+FROM golang:1.22.3 as builder
 
 ARG APP=./app
 
@@ -19,12 +19,12 @@ RUN --mount=type=cache,target=/root/.cache/go-build CGO_ENABLED=0 go build -v -o
 #########################################
 #  Image                                #
 #########################################
-FROM ubuntu:latest
+FROM ubuntu:jammy-20240427
 
 WORKDIR /helium
 
 RUN apt update
-RUN apt install -y iperf3 git iproute2
+RUN apt install -y iproute2
 
 COPY ./shape_traffic_and_start.sh /helium/shape_traffic_and_start.sh
 
