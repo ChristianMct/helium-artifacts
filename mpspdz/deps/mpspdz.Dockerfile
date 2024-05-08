@@ -1,40 +1,6 @@
 ###############################################################################
-# Build this stage for a build environment, e.g.:                             #
-#                                                                             #
-# docker build --tag mpspdz:buildenv --target buildenv .                      #
-#                                                                             #
-# The above is equivalent to:                                                 #
-#                                                                             #
-#   docker build --tag mpspdz:buildenv \                                      #
-#     --target buildenv \                                                     #
-#     --build-arg arch=native \                                               #
-#     --build-arg cxx=clang++-11 \                                            #
-#     --build-arg use_ntl=0 \                                                 #
-#     --build-arg prep_dir="Player-Data" \                                    #
-#     --build-arg ssl_dir="Player-Data"                                       #
-#     --build-arg cryptoplayers=0                                             #
-#                                                                             #
-# To build for an x86-64 architecture, with g++, NTL (for HE), custom         #
-# prep_dir & ssl_dir, and to use encrypted channels for 4 players:            #
-#                                                                             #
-#   docker build --tag mpspdz:buildenv \                                      #
-#     --target buildenv \                                                     #
-#     --build-arg arch=x86-64 \                                               #
-#     --build-arg cxx=g++ \                                                   #
-#     --build-arg use_ntl=1 \                                                 #
-#     --build-arg prep_dir="/opt/prepdata" \                                  #
-#     --build-arg ssl_dir="/opt/ssl"                                          #
-#     --build-arg cryptoplayers=4 .                                           #
-#                                                                             #
-# To work in a container to build different machines, and compile programs:   #
-#                                                                             #
-# docker run --rm -it mpspdz:buildenv bash                                    #
-#                                                                             #
-# Once in the container, build a machine and compile a program:               #
-#                                                                             #
-#   $ make replicated-ring-party.x                                            #
-#   $ ./compile.py -R 64 tutorial                                             #
-#                                                                             #
+# This Dockerfile is a simplified version of the Dockerfile provided by the 
+# MP-SPDZ repository. 
 ###############################################################################
 FROM python:3.10.3-bullseye as buildenv
 
