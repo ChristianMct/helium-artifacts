@@ -44,7 +44,7 @@ to work on a server directly, please see the next part as it includes an automat
 2. Build the experiment Docker image: `make helium`
 4. Run the experiment: `python3 helium/exp_runner/main.py >> results`
 
-This last command runs the experiments for a grid of parameters and stores the results in `./result`. 
+This last command runs the experiments for a grid of parameters and stores the results in `./results`. 
 By default, the experiment and grid parameters represent a small set of experiments, for local test purposes.
 To reproduce the results of the paper, larger scale experiments have to be run, which require two servers.
 
