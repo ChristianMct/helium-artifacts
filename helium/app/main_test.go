@@ -54,7 +54,7 @@ func TestApp(t *testing.T) {
 
 	m := params.MaxSlots() / 2
 	app := getApp(params, m)
-	a := getTestMatrix(m)
+	a := genTestMatrix(m)
 	encoder := bgv.NewEncoder(params) // TODO pass encoder in ip ?
 
 	ctx := sessions.NewBackgroundContext("test-session")
@@ -65,7 +65,7 @@ func TestApp(t *testing.T) {
 			return err
 		}
 
-		if err := encryptTestMatrix(ctx, a, params, encoder, cloud, cloud); err != nil {
+		if err := encryptTestMatrix(ctx, a, params, cloud, cloud); err != nil {
 			log.Fatalf("error encrypting test matrix: %v", err)
 		}
 
